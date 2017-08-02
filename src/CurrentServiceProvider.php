@@ -2,6 +2,8 @@
 
 namespace Ceghirepro\Current;
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Illuminate\Support\ServiceProvider;
 
 class CurrentServiceProvider extends ServiceProvider
