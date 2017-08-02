@@ -1,6 +1,6 @@
 <?php
 
-namespace Ceghirepro\Current\Providers;
+namespace Ceghirepro\Current;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +13,7 @@ class CurrentServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      $this->publishes([__DIR__.'/Config/config.php' => config_path('current.php')]);
     }
 
     /**

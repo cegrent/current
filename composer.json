@@ -3,7 +3,7 @@
     "description": "Current RMS Laravel Package",
     "type": "library",
     "require": {
-        "guzzle/http": "^3.9"
+      "guzzlehttp/guzzle": "^6.2",
     },
     "license": "MIT License",
     "authors": [

@@ -2,6 +2,12 @@
 
 namespace Ceghirepro\Current;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+
 class CurrentAPI
 {
 	/**
@@ -9,6 +15,7 @@ class CurrentAPI
 	* @return dd("hello")
 	*/
 	public function hello() {
-		dd("hello");
+		$client = new Client();
+		dd($client);
 	}
 }
