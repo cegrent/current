@@ -12,8 +12,9 @@ Add to your project ```composer require ceghirepro/current dev-master```.
 ### Typical usage
 GET request on ```/products```:
 
-```Current::get('/products', array('page' => '1', 'per_page' => '20', 'filtermode' => 'all'))```
+```Current::get('/products', array('page' => '1', 'per_page' => '20', 'filtermode' => 'all'));```
+
 
 POST request on ```/availability/group```:
 
-```Current::post('/availability/group', array(), array('product_availability_view_options' => array('product_group_id' => 1))```
+```Current::post('/availability/group', array(), array('product_availability_view_options' => array('product_group_id' => 1));```
