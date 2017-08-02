@@ -1,0 +1,16 @@
+{
+    "name": "ceghirepro/current",
+    "description": "Current RMS Laravel Package",
+    "type": "library",
+    "require": {
+        "guzzle/http": "^3.9"
+    },
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Benjamin Bowles",
+            "email": "ben@ceghirepro.uk"
+        }
+    ],
+    "minimum-stability": "stable"
+}
