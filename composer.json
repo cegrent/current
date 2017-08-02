@@ -12,5 +12,15 @@
             "email": "ben@ceghirepro.uk"
         }
     ],
+    "autoload": {
+       "psr-4": {
+         "Ceghirepro\\Current\\": "src"
+       }
+   },
+   "scripts": {
+       "post-root-package-install": [
+           "php artisan vendor:publish"
+       ]
+   },
     "version": "0.0.1"
 }
