@@ -9,9 +9,11 @@ Add to your project ```composer require ceghirepro/current dev-master```.
 3. Run ```php artisan vendor:publish```
 4. Add API Key and domain details to config/current.php
 
-###Typical usage
+### Typical usage
 GET request on ```/products```:
+
 ```Current::get('/products', array('page' => '1', 'per_page' => '20', 'filtermode' => 'all'))```
 
 POST request on ```/availability/group```:
+
 ```Current::post('/availability/group', array(), array('product_availability_view_options' => array('product_group_id' => 1))```
