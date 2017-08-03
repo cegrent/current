@@ -17,9 +17,6 @@ class CurrentAPI
 {
 	protected $client;
 
-	/**
-	*
-	**/
 	public function __construct()
   {
 		$this->cache_length = Config::get('current.cache_length');
@@ -42,12 +39,11 @@ class CurrentAPI
 	*	@param string			$method
 	* @param array 			$params
 	* @param boolean		$cache
-	*	@param array 			$array
 	*	@return $this->build()
 	**/
 	public function get($stub, $params, $array = array())
 	{
-		return $this->build('get', $stub, $params, $array = array());
+		return $this->build('get', $stub, $params, $array);
 	}
 
 	/**
@@ -61,7 +57,7 @@ class CurrentAPI
 	**/
 	public function post($stub, $params, $array = array())
 	{
-		return $this->build('post', $stub, $params, $array = array());
+		return $this->build('post', $stub, $params, $array);
 	}
 
 	/**
@@ -75,7 +71,7 @@ class CurrentAPI
 	**/
 	public function put($stub, $params, $array = array())
 	{
-		return $this->build('put', $stub, $params, $array = array());
+		return $this->build('put', $stub, $params, $array);
 	}
 
 	/**
@@ -89,7 +85,7 @@ class CurrentAPI
 	**/
 	public function delete($stub, $params, $array = array())
 	{
-		return $this->build('delete', $stub, $params, $array = array());
+		return $this->build('delete', $stub, $params, $array);
 	}
 
 	/**
