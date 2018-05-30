@@ -131,16 +131,15 @@ class CurrentAPI
 			if ($e->hasResponse()) {
 				Log::info("Response:" . Psr7\str($e->getResponse()));
 			}
-
-			abort('500',Psr7\str($e->getResponse()));
+			
+			return array('error' => $e->getMessage());
 	 	} catch (RequestException $e) {
 			Log::info($this->log_message." Request error:" . Psr7\str($e->getRequest()));
 
 			if ($e->hasResponse()) {
 				Log::info("Response:" . Psr7\str($e->getResponse()));
 			}
-
-			abort('500',Psr7\str($e->getResponse()));
+			return array('error' => $e->getMessage());
 		}
 	}
 
