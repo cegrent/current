@@ -126,19 +126,8 @@ class CurrentAPI
 			// json_decode the object
 			return json_decode($data, true);
 		} catch (ClientException $e) {
-			Log::info($this->log_message." Client error:" . Psr7\str($e->getRequest()));
-
-			if ($e->hasResponse()) {
-				Log::info("Response:" . Psr7\str($e->getResponse()));
-			}
-			
 			return array('error' => $e->getMessage());
 	 	} catch (RequestException $e) {
-			Log::info($this->log_message." Request error:" . Psr7\str($e->getRequest()));
-
-			if ($e->hasResponse()) {
-				Log::info("Response:" . Psr7\str($e->getResponse()));
-			}
 			return array('error' => $e->getMessage());
 		}
 	}
