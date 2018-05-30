@@ -1,6 +1,6 @@
 <?php
 
-namespace Ceghirepro\Current;
+namespace Completeequipmentgroup\Current;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
