@@ -5,7 +5,7 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3"
     },
-    "license": "MIT License",
+    "license": "MIT",
     "authors": [
         {
             "name": "Benjamin Bowles",
