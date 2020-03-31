@@ -1,5 +1,5 @@
 {
-    "name": "Cegrent/current",
+    "name": "cegrent/current",
     "description": "Current RMS Laravel Package",
     "type": "library",
     "require": {
