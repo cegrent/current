@@ -1,5 +1,5 @@
 {
-    "name": "Ceghirepro/current",
+    "name": "Cegrent/current",
     "description": "Current RMS Laravel Package",
     "type": "library",
     "require": {
@@ -14,7 +14,7 @@
     ],
     "autoload": {
        "psr-4": {
-         "Ceghirepro\\Current\\": "src"
+         "Cegrent\\Current\\": "src"
        }
    },
    "scripts": {
