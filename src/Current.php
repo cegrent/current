@@ -1,6 +1,6 @@
 <?php
 
-namespace Completeequipmentgroup\Current;
+namespace Ceghirepro\Current;
 
 use Illuminate\Support\Facades\Facade;
 

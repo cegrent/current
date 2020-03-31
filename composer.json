@@ -1,5 +1,5 @@
 {
-    "name": "Completeequipmentgroup/current",
+    "name": "Ceghirepro/current",
     "description": "Current RMS Laravel Package",
     "type": "library",
     "require": {
@@ -9,12 +9,12 @@
     "authors": [
         {
             "name": "Benjamin Bowles",
-            "email": "ben.bowles@Completeequipmentgroup.uk"
+            "email": "ben.bowles@ceg.rent"
         }
     ],
     "autoload": {
        "psr-4": {
-         "Completeequipmentgroup\\Current\\": "src"
+         "Ceghirepro\\Current\\": "src"
        }
    },
    "scripts": {

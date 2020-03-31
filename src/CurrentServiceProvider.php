@@ -1,6 +1,6 @@
 <?php
 
-namespace Completeequipmentgroup\Current;
+namespace Ceghirepro\Current;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -24,7 +24,7 @@ class CurrentServiceProvider extends ServiceProvider
     public function register()
     {
       $this->app->bind('Current',function(){
-          return new \Completeequipmentgroup\Current\CurrentAPI;
+          return new \Ceghirepro\Current\CurrentAPI;
       });
     }
 }
