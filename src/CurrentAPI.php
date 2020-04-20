@@ -55,9 +55,9 @@ class CurrentAPI
 	*	@param array 			$array
 	*	@return $this->build()
 	**/
-	public function post($stub, $params, $array = array())
+	public function post($stub, $params, $array = array(), $cache = false)
 	{
-		return $this->build('post', $stub, $params, $array);
+		return $this->build('post', $stub, $params, $array, $cache);
 	}
 
 	/**
@@ -69,9 +69,9 @@ class CurrentAPI
 	*	@param array 			$array
 	*	@return $this->build()
 	**/
-	public function put($stub, $params, $array = array())
+	public function put($stub, $params, $array = array(), $cache = false)
 	{
-		return $this->build('put', $stub, $params, $array);
+		return $this->build('put', $stub, $params, $array, $cache);
 	}
 
 	/**
@@ -83,9 +83,9 @@ class CurrentAPI
 	*	@param array 			$array
 	*	@return $this->build()
 	**/
-	public function delete($stub, $params, $array = array())
+	public function delete($stub, $params, $array = array(), $cache = false)
 	{
-		return $this->build('delete', $stub, $params, $array);
+		return $this->build('delete', $stub, $params, $array, $cache);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class CurrentAPI
 	*	@param array 			$array
 	*	@return array  		$data
 	**/
-	public function build($method, $stub, $params, $array = array())
+	public function build($method, $stub, $params, $array = array(), $cache = true)
 	{
 		try {
 			$path = $stub."?".$this->params($params);
@@ -106,7 +106,7 @@ class CurrentAPI
 			$cache_key = base64_encode($path);
 
 			// check cache exists
-			if($this->cache_length > 0 && $this->hasCache($cache_key)) {
+			if($cache && $this->cache_length > 0 && $this->hasCache($cache_key)) {
 				// get cached object
 				$data = $this->getCache($cache_key);
 			} else {
