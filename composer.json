@@ -3,7 +3,7 @@
     "description": "Current RMS Laravel Package",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^7.0.1"
     },
     "license": "MIT",
     "authors": [
@@ -22,5 +22,5 @@
            "php artisan vendor:publish"
        ]
    },
-    "version": "0.0.4"
+    "version": "0.0.5"
 }
