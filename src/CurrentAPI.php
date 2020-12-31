@@ -47,6 +47,19 @@ class CurrentAPI
 	}
 
 	/**
+	*	get
+	*
+	*	@param string			$method
+	* @param array 			$params
+	* @param boolean		$cache
+	*	@return $this->build()
+	**/
+	public function pdf($stub, $params, $array = array())
+	{
+		return $this->buildPDF('get', $stub, $params, $array);
+	}
+
+	/**
 	*	post
 	*
 	*	@param string			$method
@@ -125,6 +138,25 @@ class CurrentAPI
 
 			// json_decode the object
 			return json_decode($data, true);
+		} catch (ClientException $e) {
+			return array('error' => $e->getMessage());
+	 	} catch (RequestException $e) {
+			return array('error' => $e->getMessage());
+		}
+	}
+
+	public function buildPDF($method, $stub, $params, $array = array(), $cache = true)
+	{
+		try {
+			$path = $stub."?".$this->params($params);
+			
+			// log info for request
+			Log:info($this->log_message.' ('.$method.') '.$path);
+
+			// do live request
+			$data = $this->client->request($method, $path, ['json' => $array])->getBody()->getContents();
+
+			return $data;
 		} catch (ClientException $e) {
 			return array('error' => $e->getMessage());
 	 	} catch (RequestException $e) {
