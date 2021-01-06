@@ -41,9 +41,9 @@ class CurrentAPI
 	* @param boolean		$cache
 	*	@return $this->build()
 	**/
-	public function get($stub, $params, $array = array())
+	public function get($stub, $params, $array = array(), $cache = true)
 	{
-		return $this->build('get', $stub, $params, $array);
+		return $this->build('get', $stub, $params, $array, $cache);
 	}
 
 	/**
@@ -54,9 +54,9 @@ class CurrentAPI
 	* @param boolean		$cache
 	*	@return $this->build()
 	**/
-	public function pdf($stub, $params, $array = array())
+	public function pdf($stub, $params, $array = array(), $cache = false)
 	{
-		return $this->buildPDF('get', $stub, $params, $array);
+		return $this->buildPDF('get', $stub, $params, $array, $cache);
 	}
 
 	/**
