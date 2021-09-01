@@ -26,7 +26,8 @@ class CurrentAPI
 			'cookies' => false,
 			'headers' => array(
 				"X-AUTH-TOKEN" => Config::get('current.api_key'),
-				"X-SUBDOMAIN" => Config::get('current.domain')
+				"X-SUBDOMAIN" => Config::get('current.domain'),
+				"X-TIME-ZONE" => Config::get('current.time_zone')
 			),
 			'base_uri' => "https://api.current-rms.com/api/v".Config::get('current.version')."/",
 			'http_errors' => true
