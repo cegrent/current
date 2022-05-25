@@ -170,17 +170,13 @@ class CurrentAPI
 				return $data;
 			} elseif($data->serverError()) {
 				$data->throw();			
-			} elseif($data->clientError()) {
-				$data->throw();			
 			} elseif($data->failed()) {
 				$data->throw();			
 			}
 		} catch(RequestException $e) {
 			report($e);	
-			abort(500);
 		} catch(ConnectionException $e) {
 			report($e);	
-			abort(500);
 		}	
 	}
 
