@@ -4,42 +4,57 @@ namespace Cegrent\Current;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Request;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\RequestException;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\ClientException;
 
 class CurrentAPI
 {
-	protected $client;
+	// protected $client;
+	protected $request;
 
 	public function __construct()
-  {
+	{
 		$this->cache_length = Config::get('current.cache_length');
 		$this->log_message = "currentrms/api/v".Config::get('current.version');
 
-		$this->client = new Client([
-			'cookies' => false,
-			'headers' => array(
+		// $this->client = new Client([
+		// 	'cookies' => false,
+		// 	'headers' => array(
+		// 		"X-AUTH-TOKEN" => Config::get('current.api_key'),
+		// 		"X-SUBDOMAIN" => Config::get('current.domain'),
+		// 		"X-TIME-ZONE" => Config::get('current.time_zone')
+		// 	),
+		// 	'base_uri' => "https://api.current-rms.com/api/v".Config::get('current.version')."/",
+		// 	'http_errors' => true
+		// ]);
+
+		$this->request = Http::withOptions([
+				'debug' => false,
+			])
+			->retry(5, 100, function ($exception) {
+				return $exception instanceof ConnectionException;
+			})
+			->baseUrl("https://api.current-rms.com/api/v".Config::get('current.version')."/")
+			->acceptJson()
+			->withHeaders([
 				"X-AUTH-TOKEN" => Config::get('current.api_key'),
 				"X-SUBDOMAIN" => Config::get('current.domain'),
 				"X-TIME-ZONE" => Config::get('current.time_zone')
-			),
-			'base_uri' => "https://api.current-rms.com/api/v".Config::get('current.version')."/",
-			'http_errors' => true
-		]);
-  }
+			]);
+	}
 
 	/**
 	*	get
 	*
 	*	@param string			$method
-	* @param array 			$params
-	* @param boolean		$cache
+	* 	@param array 			$params
+	* 	@param boolean			$cache
 	*	@return $this->build()
 	**/
 	public function get($stub, $params, $array = array(), $cache = true)
@@ -51,8 +66,8 @@ class CurrentAPI
 	*	get
 	*
 	*	@param string			$method
-	* @param array 			$params
-	* @param boolean		$cache
+	* 	@param array 			$params
+	* 	@param boolean			$cache
 	*	@return $this->build()
 	**/
 	public function pdf($stub, $params, $array = array(), $cache = false)
@@ -64,8 +79,8 @@ class CurrentAPI
 	*	post
 	*
 	*	@param string			$method
-	* @param array 			$params
-	* @param boolean		$cache
+	* 	@param array 			$params
+	* 	@param boolean			$cache
 	*	@param array 			$array
 	*	@return $this->build()
 	**/
@@ -78,8 +93,8 @@ class CurrentAPI
 	*	put
 	*
 	*	@param string			$method
-	* @param array 			$params
-	* @param boolean		$cache
+	* 	@param array 			$params
+	* 	@param boolean			$cache
 	*	@param array 			$array
 	*	@return $this->build()
 	**/
@@ -92,8 +107,8 @@ class CurrentAPI
 	*	delete
 	*
 	*	@param string			$method
-	* @param array 			$params
-	* @param boolean		$cache
+	* 	@param array 			$params
+	* 	@param boolean			$cache
 	*	@param array 			$array
 	*	@return $this->build()
 	**/
@@ -107,10 +122,10 @@ class CurrentAPI
 	*
 	*
 	*	@param string			$method
-	* @param array 			$params
-	* @param boolean		$cache
+	* 	@param array 			$params
+	* 	@param boolean			$cache
 	*	@param array 			$array
-	*	@return array  		$data
+	*	@return array  			$data
 	**/
 	public function build($method, $stub, $params, $array = array(), $cache = true)
 	{
@@ -118,7 +133,7 @@ class CurrentAPI
 			$path = $stub."?".$this->params($params);
 			// create a cache key
 			$cache_key = base64_encode($path);
-
+	
 			// check cache exists
 			if($cache && $this->cache_length > 0 && $this->hasCache($cache_key)) {
 				// get cached object
@@ -126,24 +141,43 @@ class CurrentAPI
 			} else {
 				// log info for request
 				Log:info($this->log_message.' ('.$method.') '.$path);
-
+	
 				// do live request
-				$data = $this->client->request($method, $path, ['json' => $array])->getBody()->getContents();
-
+	
+				if($method == "get") {
+					$data = $this->request->get($stub, $params);
+				}
+	
+				if($method == "post") {
+					$data = $this->request->post($stub, $array);
+				}
+			}
+	
+			if($data->successful()) {
+				// collect
+				$data->collect();
+	
 				// are we caching?
 				if($this->cache_length > 0) {
 					// cache request
 					$this->cache($data, $cache_key);
 				}
+	
+				return $data;
+			} elseif($data->serverError()) {
+				$data->throw();			
+			} elseif($data->clientError()) {
+				$data->throw();			
+			} elseif($data->failed()) {
+				$data->throw();			
 			}
-
-			// json_decode the object
-			return json_decode($data, true);
-		} catch (ClientException $e) {
-			return array('error' => $e->getMessage());
-	 	} catch (RequestException $e) {
-			return array('error' => $e->getMessage());
-		}
+		} catch(RequestException $e) {
+			report($e);	
+			abort(500);
+		} catch(ConnectionException $e) {
+			report($e);	
+			abort(500);
+		}	
 	}
 
 	public function buildPDF($method, $stub, $params, $array = array(), $cache = true)
@@ -166,7 +200,7 @@ class CurrentAPI
 	}
 
 	/**
-	* clearCache
+	* 	clearCache
 	*
 	*	@return void
 	*/
@@ -182,12 +216,12 @@ class CurrentAPI
 	// Private functions
 
 	/**
-	* cache
+	* 	cache
 	*
-	* @param  array  $data
-  * @param  string  $key
-  * @return void
-  */
+	* 	@param  array  	$data
+  	* 	@param  string  $key
+  	* 	@return void
+  	*/
 	private function cache($data, $key)
 	{
 		Log::info($this->log_message.' caching: '.$key);
@@ -197,9 +231,9 @@ class CurrentAPI
 	/**
 	* hasCache
 	*
-  * @param  string  $key
-  * @return object	Cache
-  */
+  	* @param  string  	$key
+  	* @return object	Cache
+  	*/
 	private function hasCache($key)
 	{
 		return Cache::has($key);
@@ -208,9 +242,9 @@ class CurrentAPI
 	/**
 	* getCache
 	*
-  * @param  string  $key
-  * @return object	Cache
-  */
+  	* @param  string  	$key
+  	* @return object	Cache
+  	*/
 	private function getCache($key)
 	{
 		Log:info($this->log_message.' getting cache: "'.$key.'"');
@@ -221,7 +255,7 @@ class CurrentAPI
 	*	Params string builder
 	*
 	*	@param array 		$array
-	* @return string	$str
+	* 	@return string		$str
 	*/
 	private function params($array)
 	{
