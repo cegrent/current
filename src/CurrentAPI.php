@@ -153,7 +153,7 @@ class CurrentAPI
 				}
 	
 				if($method == "post") {
-					$data = $this->request->post($stub, $array);
+					$data = $this->request->post($stub, json_encode($array));
 				}
 			}
 	
