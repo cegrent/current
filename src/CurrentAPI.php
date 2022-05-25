@@ -13,6 +13,10 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\ClientException;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7;
+
 class CurrentAPI
 {
 	// protected $client;
