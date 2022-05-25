@@ -188,8 +188,18 @@ class CurrentAPI
 			// log info for request
 			Log:info($this->log_message.' ('.$method.') '.$path);
 
-			// do live request
-			$data = $this->client->request($method, $path, ['json' => $array])->getBody()->getContents();
+			$client = new Client([
+				'cookies' => false,
+				'headers' => array(
+					"X-AUTH-TOKEN" => Config::get('current.api_key'),
+					"X-SUBDOMAIN" => Config::get('current.domain'),
+					"X-TIME-ZONE" => Config::get('current.time_zone')
+				),
+				'base_uri' => "https://api.current-rms.com/api/v".Config::get('current.version')."/",
+				'http_errors' => true
+			]);
+
+			$data = $client->request($method, $path, ['json' => $array])->getBody()->getContents();
 
 			return $data;
 		} catch (ClientException $e) {
