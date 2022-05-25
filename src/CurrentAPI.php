@@ -41,7 +41,7 @@ class CurrentAPI
 		$this->request = Http::withOptions([
 				'debug' => false,
 			])
-			->retry(5, 100, function ($exception) {
+			->retry(2, 50, function ($exception) {
 				return $exception instanceof ConnectionException;
 			})
 			->baseUrl("https://api.current-rms.com/api/v".Config::get('current.version')."/")
