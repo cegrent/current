@@ -151,9 +151,17 @@ class CurrentAPI
 				if($method == "get") {
 					$data = $this->request->get($stub, $params);
 				}
+
+				if($method == "put") {
+					$data = $this->request->put($stub, $array);
+				}
 	
 				if($method == "post") {
 					$data = $this->request->post($stub, $array);
+				}
+
+				if($method == "delete") {
+					$data = $this->request->delete($stub, $params);
 				}
 			}
 	
