@@ -141,7 +141,7 @@ class CurrentAPI
 			// check cache exists
 			if($cache && $this->cache_length > 0 && $this->hasCache($cache_key)) {
 				// get cached object
-				$data = $this->getCache($cache_key);
+				return $this->getCache($cache_key);
 			} else {
 				// log info for request
 				Log:info($this->log_message.' ('.$method.') '.$path);
