@@ -133,59 +133,49 @@ class CurrentAPI
 	**/
 	public function build($method, $stub, $params, $array = array(), $cache = true)
 	{
-		try {
-			$path = $stub."?".$this->params($params);
-			// create a cache key
-			$cache_key = base64_encode($path);
-	
-			// check cache exists
-			if($cache && $this->cache_length > 0 && $this->hasCache($cache_key)) {
-				// get cached object
-				return $this->getCache($cache_key);
-			} else {
-				// log info for request
-				Log:info($this->log_message.' ('.$method.') '.$path);
-	
-				// do live request
-	
-				if($method == "get") {
-					$data = $this->request->get($stub, $params);
-				}
+		$path = $stub."?".$this->params($params);
+		// create a cache key
+		$cache_key = base64_encode($path);
 
-				if($method == "put") {
-					$data = $this->request->put($stub, $array);
-				}
-	
-				if($method == "post") {
-					$data = $this->request->post($stub, $array);
-				}
+		// check cache exists
+		if($cache && $this->cache_length > 0 && $this->hasCache($cache_key)) {
+			// get cached object
+			return $this->getCache($cache_key);
+		} else {
+			// log info for request
+			Log:info($this->log_message.' ('.$method.') '.$path);
 
-				if($method == "delete") {
-					$data = $this->request->delete($stub, $params);
-				}
+			// do live request
+
+			if($method == "get") {
+				$data = $this->request->get($stub, $params);
 			}
-	
-			if($data->successful()) {
-				// collect
-				$data->collect();
-	
-				// are we caching?
-				if($this->cache_length > 0) {
-					// cache request
-					$this->cache($data, $cache_key);
-				}
-	
-				return $data;
-			} elseif($data->serverError()) {
-				$data->throw();			
-			} elseif($data->failed()) {
-				$data->throw();			
+
+			if($method == "put") {
+				$data = $this->request->put($stub, $array);
 			}
-		} catch(RequestException $e) {
-			report($e);	
-		} catch(ConnectionException $e) {
-			report($e);	
-		}	
+
+			if($method == "post") {
+				$data = $this->request->post($stub, $array);
+			}
+
+			if($method == "delete") {
+				$data = $this->request->delete($stub, $params);
+			}
+		}
+
+		if($data->successful()) {
+			// collect
+			$data->collect();
+
+			// are we caching?
+			if($this->cache_length > 0) {
+				// cache request
+				$this->cache($data, $cache_key);
+			}
+
+			return $data;
+		}
 	}
 
 	public function buildPDF($method, $stub, $params, $array = array(), $cache = true)
