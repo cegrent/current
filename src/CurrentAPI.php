@@ -67,6 +67,32 @@ class CurrentAPI
 	}
 
 	/**
+	*	getWithString
+	*
+	*	@param string			$method
+	* 	@param string 			$params
+	*	@return $data
+	**/
+	public function getWithString($stub, $params)
+	{
+		$data = $this->request->get($stub, $params);
+
+		if($data->successful()) {
+			
+			// collect
+			$data->collect();
+
+			// are we caching?
+			if($this->cache_length > 0) {
+				// cache request
+				$this->cache($data, $cache_key);
+			}
+
+			return $data;
+		}
+	}
+
+	/**
 	*	get
 	*
 	*	@param string			$method
